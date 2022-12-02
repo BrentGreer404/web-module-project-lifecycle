@@ -37,7 +37,6 @@ export default class App extends React.Component {
   }
 
   toggleComplete = (id) => {
-    console.log("clicked")
       this.patchList(id)
       .then(res => 
       this.setState({...this.state, items: this.state.items.map((v) => {
@@ -48,19 +47,20 @@ export default class App extends React.Component {
       })}))
   }
 
-  componentDidMount() {
-    this.update()
+  addTodo = (name) => {
+    axios.post(URL, {name})
+    .then(res => this.setState({...this.state, items: [...this.state.items, res.data.data]}))
   }
 
-  componentDidUpdate() {
-    console.log("updated")
+  componentDidMount() {
+    this.update()
   }
 
   render() {
     return (
       <div>
         <TodoList items={this.state.items} toggle={(id) => this.toggleComplete(id)}/>
-        <Form/>
+        <Form add={(name) => this.addTodo(name)}/>
       </div>
     )
   }
