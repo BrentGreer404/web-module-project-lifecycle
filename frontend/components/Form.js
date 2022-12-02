@@ -15,6 +15,15 @@ export default class Form extends React.Component {
   submit = (evt) => {
     evt.preventDefault()
     this.props.add(this.state.inputValue)
+    this.clearForm()
+  }
+
+  clearForm = () => {
+    this.setState({...this.state, inputValue: ""})
+  }
+
+  clearComplete = () => {
+    this.props.clear()
   }
 
   render() {
@@ -24,6 +33,7 @@ export default class Form extends React.Component {
           <input onChange={this.changeHandler} value={this.state.inputValue} type="text"></input>
           <button>Submit</button>
         </form>
+        <button onClick={this.clearComplete}>Clear Completed</button>
       </div>
     )
   }

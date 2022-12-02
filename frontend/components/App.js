@@ -52,6 +52,10 @@ export default class App extends React.Component {
     .then(res => this.setState({...this.state, items: [...this.state.items, res.data.data]}))
   }
 
+  clearComplete = () => {
+    this.setState({...this.state, items: this.state.items.filter(v => !v.completed)})
+  }
+
   componentDidMount() {
     this.update()
   }
@@ -60,7 +64,7 @@ export default class App extends React.Component {
     return (
       <div>
         <TodoList items={this.state.items} toggle={(id) => this.toggleComplete(id)}/>
-        <Form add={(name) => this.addTodo(name)}/>
+        <Form add={(name) => this.addTodo(name)} clear={this.clearComplete}/>
       </div>
     )
   }
