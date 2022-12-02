@@ -6,7 +6,9 @@ export default class Todo extends React.Component {
   }
   render() {
     return (
-    <p>{this.props.name}</p>
-  )
+      <div onClick={() => this.props.toggle(this.props.item.id)}>
+        <p>{this.props.item.name}{+this.props.item.completed ? " ☒" : " ☐"}</p>
+      </div>
+    )
   }
 }

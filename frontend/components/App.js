@@ -5,12 +5,8 @@ import Form from './Form'
 
 const URL = 'http://localhost:9000/api/todos'
 
-const fetchList = () => {
-  return axios
-    .get(URL)
-    .then(res => res)
-    .catch(err => console.log(err))
-}
+
+
 
 export default class App extends React.Component {
   constructor() {
@@ -20,19 +16,50 @@ export default class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    console.log("did mount")
-    fetchList()
-      .then(res => 
-      this.setState({items: res.data.data})
-      )
-    
+  fetchList = () => {
+    return axios
+      .get(URL)
+      .then(res => res)
+      .catch(err => console.log(err))
   }
+  
+  patchList = (id) => {
+    return axios
+      .patch(URL+`/${id}`)
+      .catch(err => console.log(err))
+  }
+
+  update = () => {
+    this.fetchList()
+      .then(res => 
+      this.setState({...this.state, items: res.data.data})
+      )
+  }
+
+  toggleComplete = (id) => {
+    console.log("clicked")
+      this.patchList(id)
+      .then(res => 
+      this.setState({...this.state, items: this.state.items.map((v) => {
+        if (v.id === id){
+          return (res.data.data)
+        }
+        return v
+      })}))
+  }
+
+  componentDidMount() {
+    this.update()
+  }
+
+  componentDidUpdate() {
+    console.log("updated")
+  }
+
   render() {
-    console.log(this.state.items)
     return (
       <div>
-        <TodoList items={this.state.items}/>
+        <TodoList items={this.state.items} toggle={(id) => this.toggleComplete(id)}/>
         <Form/>
       </div>
     )
